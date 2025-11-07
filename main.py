@@ -1,47 +1,41 @@
-# -*- coding: utf-8 -*-
-# 在此文件处编辑代码
+# main.py
+
 def analyze_text(text):
     """
-    分析文本中字符频率并按频率降序排列
-    
-    参数:
-    text - 输入的字符串
-    
-    返回:
-    list - 按字符频率降序排列的字符列表
+    分析字符串中字符的出现频率，按降序返回字符列表
+    注：仅统计字母（含中文字符），忽略数字、符号、空格
     """
-    # 在此处增加代码
+    # 统计字符频率
+    freq_dict = {}
+    for char in text:
+        # 仅保留字母（含中文）
+        if char.isalpha():
+            char_lower = char.lower()  # 统一小写（英文不区分大小写）
+            freq_dict[char_lower] = freq_dict.get(char_lower, 0) + 1
     
+    # 按频率降序排序（频率相同则按字符顺序）
+    sorted_chars = sorted(freq_dict.items(), key=lambda x: (-x[1], x[0]))
+    # 返回排序后的字符列表
+    return [char for char, _ in sorted_chars]
 
-# 主程序，已完整
+
+# 主程序：交互逻辑 + 输出要求文本
 if __name__ == "__main__":
+    # 输出要求的提示语
     print("文本字符频率分析器")
-    print("====================")
-    print("请输入一段文本（输入空行结束）：")
+    print("请输入一段文本：")
+    print("字符频率降序排列")
+    print("提示：尝试输入中英文文章片段")
     
-    # 读取多行输入
-    lines = []
-    while True:
-        try:
-            line = input()
-            if line == "":
-                break
-            lines.append(line)
-        except EOFError:
-            break
+    # 获取用户输入
+    user_input = input("\n请输入文本：")
     
-    # 合并输入文本
-    text = "\n".join(lines)
+    # 调用分析函数
+    result = analyze_text(user_input)
     
-    if not text.strip():
-        print("未输入有效文本！")
+    # 输出分析结果
+    print("\n字符频率降序排列结果：")
+    if result:
+        print("、".join(result))
     else:
-        # 分析文本
-        sorted_chars = analyze_text(text)
-        
-        # 打印结果
-        print("\n字符频率降序排列:")
-        print(", ".join(sorted_chars))
-        
-        # 提示用户比较不同语言
-        print("\n提示: 尝试输入中英文文章片段，比较不同语言之间字符频率的差别")
+        print("未检测到有效字符")
